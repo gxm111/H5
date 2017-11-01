@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>花千骨H5-正版影视授权</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="full-screen" content="true" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="360-fullscreen" content="true" />
+    <style>
+        html,
+        body {
+            -ms-touch-action: none;
+            background: #ffffff;
+            padding: 0;
+            border: 0;
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+        var def = {
+            uid: "junyou",
+            ip: "127.0.0.1",
+            sid: 1,
+            port: 1234,
+            pid: "weixin"
+        };
+
+        function setCookie(name, value) {
+            var Days = 30;
+            var exp = new Date();
+            exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+            document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+        }
+
+        //读取cookies 
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return unescape(arr[2]);
+            else
+                return null;
+        }
+        window.onload = function() {
+            var $g = function(id) {
+                return document.getElementById(id);
+            }
+            var $k = function(id) {
+                return getCookie(id) || def[id];
+            }
+
+            var uid = $g("uid");
+            var ip = $g("ip");
+            var sid = $g("sid");
+            var port = $g("port");
+            var pid = $g("pid");
+            uid.value = $k("uid");
+            ip.value = $k("ip");
+            sid.value = $k("sid");
+            port.value = $k("port");
+            pid.value = $k("pid");
+            var loader;
+            if (window["XMLHttpRequest"]) {
+                loader = new window["XMLHttpRequest"]();
+            } else {
+                loader = new ActiveXObject("MSXML2.XMLHTTP");
+            }
+            loader.onreadystatechange = function() {
+                if (loader.readyState == 4) { // 4 = "loaded"
+                    var ioError = (loader.status >= 400 || loader.status == 0);
+                    if (ioError) { //请求错误
+                        alert("账号验证错误");
+                    } else {
+                        var result = loader.responseText;
+                        egret["baseParams"] = {
+                            uid: uid.value,
+                            ip: ip.value,
+                            sid: sid.value,
+                            port: port.value,
+                            pid: pid.value,
+                            sign: result
+                        };
+                        egret.runEgret({
+                            renderMode: "canvas"
+                        });
+                        var tab = document.getElementById("tab");
+                        tab.parentNode.removeChild(tab);
+                    }
+                }
+            }
+            document.getElementById("btnLogin").onclick = function() {
+                var $s = function(id) {
+                    setCookie(id, $g(id).value);
+                }
+                $s("uid");
+                $s("ip");
+                $s("sid");
+                $s("port");
+                $s("pid");
+                _loginUrl = "http://" + ip.value + ":" + port.value + "/p?puid=" + uid.value + "&pid=" + pid.value + "&sid=" + sid.value;
+                loader.open("GET", _loginUrl, true);
+                loader.responseType = "";
+                loader.send();
+            }
+        }
+    </script>
+    <table id="tab">
+        <tr>
+            <td>用户名：</td>
+            <td><input id="uid" type="text" size="20" /></td>
+        </tr>
+        <tr>
+            <td>服务端ip：</td>
+            <td><input id="ip" type="text" size="20" /></td>
+        </tr>
+        <tr>
+            <td>服务器标识：</td>
+            <td><input id="sid" type="text" size="20" /></td>
+        </tr>
+        <tr>
+            <td>连接端口：</td>
+            <td><input id="port" type="text" size="20" /></td>
+        </tr>
+        <tr>
+            <td>平台id：</td>
+            <td><input id="pid" type="text" size="20" /></td>
+        </tr>
+        <tr>
+            <td>其他参数：</td>
+            <td><textarea id="other" cols="40" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input id="btnLogin" type="button" value="登录" /></td>
+        </tr>
+    </table>
+    <!--这个标签为通过egret提供的第三方库的方式生成的 javascript 文件。删除 modules_files 标签后，库文件加载列表将不会变化，请谨慎操作！-->
+    <!---modules_files_start-->
+	<script egret="lib" src="libs/modules/egret/egret.js" src-release="libs/modules/egret/egret.min.js"></script>
+	<script egret="lib" src="libs/modules/egret/egret.web.js" src-release="libs/modules/egret/egret.web.min.js"></script>
+	<script egret="lib" src="libs/modules/res/res.js" src-release="libs/modules/res/res.min.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/ServiceName.js"></script>
+	<!--modules_files_end-->
+
+    <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
+    <!--other_libs_files_start-->
+    <!--other_libs_files_end-->
+
+    <!--这个标签会被替换为项目中所有的 javascript 文件。删除 game_files 标签后，项目文件加载列表将不会变化，请谨慎操作！-->
+    <!--game_files_start-->
+	<script egret="game" src="bin-debug/Game.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/UnitAction.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/actions/GUnitAction.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/actions/AttackAction.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/RecyclablePool.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/actions/DeadAction.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/actions/StandbyAction.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/actions/WalkAction.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/BuffContainer.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/Unit.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/GUnit.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/animation/units/HpBar.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/cmds/FightCmds.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/UnitSetting.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/dmg/DmgEffect.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/dmg/DmgInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/dmg/DmgType.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/EnemyVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/entities/ArrowEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/entities/BufferEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/entities/MissleEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/entities/StrightArrowEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/entities/UnitEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/FightController.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/FightPlayer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/guanka/GuanKaCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/IEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/BattleBonus_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/BattleInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/BattleResult_C2S.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/FHost.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/Proxy.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/Service.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/BattleService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/Battle_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/FightCommand.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/GuanKaInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/MUnitEntity.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/msgs/XAttr.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/finder/CircleFinder.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/finder/IFinder.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/finder/RectangleFinder.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/finder/SectorFinder.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/JiNengCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/JiNengMoBanCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/operator/Op1.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/SkillCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/SkillContext.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/SkillGroup.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/SkillManager.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/SkillType.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/skills/SkillVO.js"></script>
+	<script egret="game" src="bin-debug/junyou/tween/Tween.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/tween/BattleTween.js"></script>
+	<script egret="game" src="bin-debug/junyou/tween/TweenManager.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/battle/tween/BattleTweenManager.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/common/Coord.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/common/MenuStyles.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/common/PageRequest.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/common/PageVersion.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/core/Component.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/LangUtil.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/Slot.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/components/BaseSkillSlot.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/components/GoodsItemSlot.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/components/SimpleItemSlot.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/ConfigParser.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/core/Core.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/core/CoreFunction.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/Decorators.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/error/JError.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/EventConst.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/BaseMCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/gateway/GongNengCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/GConfig.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/gmcmd/GMCmdService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/gmcmd/ModuleChange_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/gmcmd/ModuleService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/gmcmd/SendGMCmd_C2S.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/DaoJuCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/DaojuId.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/GoodsSlotItem.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/ItemType.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/Add_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/CountChange_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/DressSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/Dress_C2S.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/EquipSuiJi.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/ItemCount.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/ItemInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/ItemsContext.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/ItemsResult.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/ItemsService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/msgs/Use_C2S.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/runtime/ItemVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/runtime/EquVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/SlotType.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/ZhuangBeiCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/items/ZhuangBeiPinZhiCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/login/msgs/CreateRole_C2S.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/login/msgs/LoginService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/login/msgs/RoleNeedRelogin_S2C.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/ListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/BagListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/Panel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/BagPanel.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/Mediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/BagPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/daojuitem/DaojuPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/daojuitem/DaojuPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/equipitem/EquipPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/bag/equipitem/EquipPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanHongbaoPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanHongbaoPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanJuanxianListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanJuanxianListItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanJuanxianPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanJuanxianPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanLimitListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanLimitListItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanLimitPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanLimitPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanListItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanMemberListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanMemberListItemView.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/menu/Menu.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanMemberMenu.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/menu/MenuBaseRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanMemberMenuItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanMemberPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanMemberPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanNoticePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanNoticePanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanShopListItemRenderer.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanShopListItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanShopPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanShopPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanUpgradePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/ClanUpgradePanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/CreateClanPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/CreateClanPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/InClanPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/InClanPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanActiveSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanBuyInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanBuyInfoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanBuySuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanCreateSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanHongbaoInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanHongbaoInfoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanHongbaoReceived.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanHongbaoReceivedSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanHongbaoSent.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanHongbaoSentSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanJoinFailed_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanJoinSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanJuanxianSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanKickSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanLimitInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanLimitInfoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanLimitUpdateSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanLimitUpdate_C2S.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanListSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanList_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanMemberInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanMemberInfoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanMyBuyInfoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanOpenHongbaoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanQuitSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanSendHongbaoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanShanrangSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanTitleInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanUpdateSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/ClanUpgradeSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/MyClanInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/msgs/MyClanInfoSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/OutClanPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/OutClanPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/ClanHongbaoInfoVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/ClanHongbaoReceivedVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/ClanHongbaoSentVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/ClanInfoVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/ClanMemberInfoVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/ClanTitle.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/MenPaiJuanXianCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/MenPaiLevelCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/MenPaiLimitCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/MenPaiQuanXianCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/MenPaiShopItemCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/clan/vo/MyClanInfoVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/createrole/CreaterolePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/createrole/CreaterolePanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equip/EquipRenderView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equip/WareEquipListRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equip/WarePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equip/WarePanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equipdetail/EquipDetailPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equipdetail/EquipDetailPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/equipdetail/EquipXattrView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/help/HelpPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/help/HelpPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/maincity/MainCityPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/maincity/MainCityPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/minirole/MiniRolePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/minirole/MiniRolePanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ModuleChecker.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ModuleId.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/INotice.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/MessageManager.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/msgs/NoticeService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/msgs/SystemMsg_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/NoticeData.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/NoticeIcon.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/NoticeManager.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/SkillNoticeIcon.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/notice/SystemNoticePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/role/FollowerSlotView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/role/render/EquipSlot.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/role/render/FollowerSlotRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/role/render/HeadImage.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/role/RolePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/role/RolePanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ronglian/msgs/RongLianService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ronglian/msgs/RongLianSuccess_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ronglian/msgs/RongLian_C2S.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ronglian/msgs/RongLian_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ronglian/RonglianPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/ronglian/RonglianPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/shop/ShopItemCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/shop/ShopItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/shop/ShopItemVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/shop/ShopListItemRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/shop/ShopPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/shop/ShopPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/sider/SiderPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/sider/SiderPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/menu/SkillItemMenuRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillAngerItemRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillAngerItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillAngerView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillItemView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/skills/msgs/SkillService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillPanelMediator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/PageList.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillListItemRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillNormalView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillNoticePanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillOrderInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillRoleSlotView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillRoleSlotViewRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillSlotView.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/module/skill/SkillSlotViewRender.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/msgs/SystemTips.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/handlers/ModuleHandler.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/mvc/ModuleHandler0.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/offline/msgs/OfflineData.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/PBMsgDict.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/ResizeManager.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/ResPrefix.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/JueSeCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/JueSeWaiXianCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/msgs/Follower.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/msgs/Role.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/msgs/RoleBase.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/msgs/RoleService.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/msgs/XAttrChange_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/role/runtime/HeroVO.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/ServiceName.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/skills/msgs/NormalSkillInfo_S2C.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/skills/msgs/SetSkillOrder.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/skills/msgs/SkillInfo.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/test/CooldownCfg.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/test/ShapeNumberTestPanel.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/utils/ArtTextUtil.js"></script>
+	<script egret="game" src="bin-debug/huaqiangu/XObject.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/CallbackInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/ClassFactory.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/configs/ConfigUtils.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/configs/DataLocator.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/configs/DataParseUtil.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/configs/ICfg.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/constant/KeyStroke.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/constant/RequestState.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/Extend.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/Extension.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/CallLater.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/Global.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/AuthData.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/AuthState.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/NetService.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/HttpNetService.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/NetData.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/NetEvent.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/NetRouter.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/protobuf/PBMessageUtils.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/net/WSNetService.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/notice/MessageChanel.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/notice/MessageChanelID.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/notice/MessageRender.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/notice/MessageRenderStyle.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/resource/IResource.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/resource/ResourceManager.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/resource/TextureResource.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/structure/ByteArray.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/structure/Int64.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/time/DateUtils.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/time/TimeVO.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/ColorUtil.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/NameUtils.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/RequestLimit.js"></script>
+	<script egret="game" src="bin-debug/junyou/debug/ThrowError.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/Temp.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/TimerUtil.js"></script>
+	<script egret="game" src="bin-debug/junyou/common/utils/WordFilter.js"></script>
+	<script egret="game" src="bin-debug/junyou/debug/ClientCheck.js"></script>
+	<script egret="game" src="bin-debug/junyou/debug/ThrowErrorHelper.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/ActionInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/PstInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/AniInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/BaseRender.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/AniRender.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/CustomAction.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/FrameInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/IDrawInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/IRenderAction.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/JTexture.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/ResourceBitmap.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/SplitUnitResource.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/animation/UnitResource.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/camera/Camera.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/cooldown/Cooldown.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/cooldown/CooldownDictionary.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/cooldown/CooldownManager.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/cooldown/CooldownMask.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/cooldown/ICooldown.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/cooldown/ICooldownDisplay.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/GameConfig.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/GameEngine.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/GameLayer.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/IDepth.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/items/IItemCfg.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/items/ItemBase.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/items/Items.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/items/SlotType.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/map/MapInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/map/MapRender.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/IUnitActionInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/MUnitAction.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/UnitController.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/UnitRender.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/UnitState.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/unit/UnitVO.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/utils/FaceToUtils.js"></script>
+	<script egret="game" src="bin-debug/junyou/game/utils/GDataParseUtils.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/async/AsyncHelper.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/async/DependerHelper.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/async/IAsync.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/async/IDepender.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/Facade.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/IAsyncPanel.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/core/ModuleScript.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/ILimitChecker.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/IModuleCfg.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/IModuleChecker.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/IModulePanel.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/ModuleManager.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/module/ModuleShowState.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/notification/BadgeInfo.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/notification/INCheck.js"></script>
+	<script egret="game" src="bin-debug/junyou/mvc/notification/NotificationManager.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/ArtText.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/Button.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/Group.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/IconButton.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/IGroupItem.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/Image.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/MPageList.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/NumericStepper.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/Scroller.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/PageScroller.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/ProgressBar.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/ScaleBitmap.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/ScrollBar.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/components/Slider.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/core/ExportType.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/core/SuiData.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/core/SuiResManager.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/BaseCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/ArtTextCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/BitmapCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/ButtonCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/IconButtonCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/NumericStepperCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/ProgressBarCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/ScaleBitmapCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/ScrollBarCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/ShareBitmapCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/SliderCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/SlotCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/creator/TextFieldCreator.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/layout/Layout.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/list/IList.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/menu/MenuBaseVO.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/menu/MenuStyle.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/tip/msg/ErrorTips.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/tip/msg/SystemTips.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/tip/tooltip/IToolTip.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/tip/tooltip/SimToolTip.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/tip/tooltip/ToolTipData.js"></script>
+	<script egret="game" src="bin-debug/junyou/sui/tip/tooltip/ToolTipManager.js"></script>
+	<script egret="game" src="bin-debug/junyou/tween/Ease.js"></script>
+	<script egret="game" src="bin-debug/junyou/tween/ITweenPlugin.js"></script>
+	<script egret="game" src="bin-debug/Main.js"></script>
+	<!--game_files_end-->
+</head>
+
+<body>
+
+    <div style="margin: auto;width: 100%;height: 100%;" class="egret-player" data-entry-class="Main" data-orientation="portrait" data-scale-mode="showAll" data-frame-rate="60" data-content-width="480" data-content-height="800" data-show-paint-rect="false"
+        data-multi-fingered="2" data-show-fps="false" data-show-log="false" data-log-filter="" data-show-fps-style="x:0,y:0,size:30,textColor:0x00c200,bgAlpha:0.9">
+    </div>
+</body>
+
+</html>

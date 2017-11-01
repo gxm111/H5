@@ -1,0 +1,18 @@
+{
+    "prefixes": [
+        "http://web.hqgh5.jy/cn/"
+    ],
+    "paths": {
+        "res": {
+            "path": "res/"
+        },
+        "skin": {
+            "path": "skin/",
+            "iPrefix": true
+        }
+    },
+    "params": {
+        "dirty": "http://web.chuanqi2.jy/web/bs.js",
+        "nameLib": "http://web.chuanqi2.jy/web/nl_cn.js"
+    }
+}

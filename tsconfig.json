@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es5",        
+        "experimentalDecorators": true
+    },
+    "exclude": [
+        "node_modules",
+        "bin-debug",
+        "bin-release",
+        "res"
+    ]
+}

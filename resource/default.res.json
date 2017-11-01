@@ -1,0 +1,30 @@
+{
+	"resources": [
+		{
+			"name": "cfgs",
+			"type": "json",
+			"url": "http://web.hqgh5.jy/cn/cfgs/client/cfgs.json"
+		},
+		{
+			"name": "game",
+			"type": "json",
+			"url": "game.json"
+		},
+		{
+			"name":"libs",
+			"type":"json",
+			"url":"../skin/lib/s.json"
+		},
+		{
+			"name":"skin/lib/d.png",
+			"type":"image",
+			"url":"../skin/lib/d.png"
+		}
+	],
+	"groups": [
+		{
+			"name": "preload",
+			"keys": "game,cfgs,libs,skin/lib/d.png"
+		}
+	]
+}
